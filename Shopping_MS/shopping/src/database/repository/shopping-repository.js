@@ -51,10 +51,18 @@ class ShoppingRepository {
               });
     
               if (!isExist &&!isRemove) {
-                cartItems.push(cartItem);
+                cartItems.push({product:{...items},unit:qty});
               }
+              cart.item= cartItems;
+              return await cart.save;
+
+
             } else {
-              cartItems.push(cartItem);
+              return await CartModel.create({
+                customerId,
+                items:[{product:{...items},unit:qty}]
+               })
+              // cartItems.push(cartItem);
             }
     
             profile.cart = cartItems;
@@ -79,9 +87,9 @@ class ShoppingRepository {
         //check transaction for payment Status
         
         try{
-            const profile = await CustomerModel.findById(customerId).populate('cart.product');
+            const cart = await CartModel.findOne({customerId:customerId});
     
-            if(profile){
+            if(cart){
                 
                 let amount = 0;   
     

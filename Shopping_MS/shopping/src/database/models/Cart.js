@@ -30,4 +30,4 @@ const CartSchema = new Schema({
     timestamps: true
 });
 
-module.exports =  mongoose.model('order', CartSchema);
+module.exports =  mongoose.model('cart', CartSchema);
