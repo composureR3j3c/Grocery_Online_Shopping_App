@@ -8,7 +8,7 @@ class ShoppingService {
   }
 
   async getCart({ _id }) {
-    I;
+    
     try {
       const cartItems = await this.repository.Cart(_id);
       return FormateData(cartItems);

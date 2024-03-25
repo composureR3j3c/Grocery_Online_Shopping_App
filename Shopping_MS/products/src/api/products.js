@@ -91,7 +91,7 @@ module.exports = (app) => {
   });
 
   app.put("/cart", UserAuth, async (req, res, next) => {
-    const { _id, qty } = req.body;
+    const { _id } = req.user;
 
     try {
       const { data } = await service.GetProductPayload(

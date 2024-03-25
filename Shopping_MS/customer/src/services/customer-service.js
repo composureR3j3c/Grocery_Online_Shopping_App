@@ -159,6 +159,7 @@ class CustomerService {
     const { event, data } = payload;
 
     const { userId, product, order, qty } = data;
+    console.log('userId',userId);
 
     switch (event) {
       case "ADD_TO_WISHLIST":

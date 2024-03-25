@@ -7,7 +7,7 @@ const { APIError, BadRequestError } = require('../../utils/app-errors')
 class ShoppingRepository {
 
     // payment
-
+ 
     async Orders(customerId){
         try{
             const orders = await OrderModel.find({customerId });        
@@ -28,25 +28,26 @@ class ShoppingRepository {
  
     async AddCartItem(customerId,  item, qty, isRemove) {
 
-    
         try {
           const cart = await CartModel.findOne({customerId:customerId});
+
+          const {_id}= item;
     
           if (cart) {
             let isExist=false;
 
-            let cartItem=cart.items;
+            let cartItems=cart.items;
 
     
             if (cartItems.length > 0) {
               cartItems.map((item) => {
-                if (item.product._id.toString() === product._id.toString()) {
+                if (item.product._id.toString() === _id.toString()) {
                   if (isRemove) {
                     cartItems.splice(cartItems.indexOf(item), 1);
                   } else {
                     item.unit = qty;
                   }
-                  isExist = true;
+                  isExist = true; 
                 }
               });
     
@@ -55,15 +56,15 @@ class ShoppingRepository {
               }
               cart.item= cartItems;
               return await cart.save;
-
+            }
 
             } else {
               return await CartModel.create({
                 customerId,
-                items:[{product:{...items},unit:qty}]
+                items:[{product:{...item},unit:qty}]
                })
               // cartItems.push(cartItem);
-            }
+            // }
     
             profile.cart = cartItems;
     
