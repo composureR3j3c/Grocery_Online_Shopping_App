@@ -86,14 +86,14 @@ class ShoppingRepository {
 
   async CreateNewOrder(customerId, txnId) {
     //check transaction for payment Status
-
+    console.log(customerId)
     try {
       const cart = await CartModel.findOne({ customerId: customerId });
 
       if (cart) {
         let amount = 0;
 
-        let cartItems = profile.cart;
+        let cartItems = cart.items;
 
         if (cartItems.length > 0) {
           //process Order
@@ -112,14 +112,12 @@ class ShoppingRepository {
             items: cartItems,
           });
 
-          profile.cart = [];
+          cart.items = [];
 
-          order.populate("items.product").execPopulate();
           const orderResult = await order.save();
 
-          profile.orders.push(orderResult);
 
-          await profile.save();
+          await cart.save();
 
           return orderResult;
         }
@@ -127,11 +125,11 @@ class ShoppingRepository {
 
       return {};
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      // throw APIError(
+      //   "API Error",
+      //   STATUS_CODES.INTERNAL_ERROR,
+      //   "Unable to Find Category"
+      // );
     }
   }
 }
