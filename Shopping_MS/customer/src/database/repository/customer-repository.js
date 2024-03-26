@@ -143,26 +143,22 @@ class CustomerRepository {
     }
   }
 
-  async AddCartItem(customerId,  { _id, name, banner, price }, qty, isRemove) {
+  async AddCartItem(customerId,  { _id, name,price,banner }, qty, isRemove) {
 
     
     try {
-      const profile = await CustomerModel.findById(customerId).populate(
-        "cart"
-      );
-
+      const profile = await CustomerModel.findById(customerId);
       if (profile) {
         const cartItem = {
-          product:{ _id, name, banner, price },
+          product:{ _id, name,price,banner },
           unit: qty,
         };
-
         let cartItems = profile.cart;
 
         if (cartItems.length > 0) {
           let isExist = false;
           cartItems.map((item) => {
-            if (item.product._id.toString() === product._id.toString()) {
+            if (item.product._id.toString() === cartItem.product._id.toString()) { 
               if (isRemove) {
                 cartItems.splice(cartItems.indexOf(item), 1);
               } else {
@@ -173,12 +169,12 @@ class CustomerRepository {
           });
 
           if (!isExist) {
-            cartItems.push(cartItem);
+
+            cartItems.push(cartItem); 
           }
         } else {
           cartItems.push(cartItem);
         }
-
         profile.cart = cartItems;
 
         const cartSaveResult = await profile.save();
@@ -187,7 +183,7 @@ class CustomerRepository {
       }
 
       throw new Error("Unable to add to cart!");
-    } catch (err) {
+    } catch (err) { 
       throw new APIError(
         "API Error",
         STATUS_CODES.INTERNAL_ERROR,
