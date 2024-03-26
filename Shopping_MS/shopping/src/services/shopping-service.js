@@ -7,7 +7,7 @@ class ShoppingService {
     this.repository = new ShoppingRepository();
   }
 
-  async getCart({ _id }) {
+  async getCart( _id ) {
     
     try {
       const cartItems = await this.repository.Cart(_id);
